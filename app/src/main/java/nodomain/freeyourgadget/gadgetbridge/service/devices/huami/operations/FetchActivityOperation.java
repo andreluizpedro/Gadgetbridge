@@ -160,7 +160,7 @@ public class FetchActivityOperation extends AbstractFetchOperation {
             return;
         }
 
-        if ((value.length % 4) == 1) {
+        if ((value.length % 8) == 1) {
             if ((byte) (lastPacketCounter + 1) == value[0] ) {
                 lastPacketCounter++;
                 bufferActivityData(value);
@@ -182,11 +182,11 @@ public class FetchActivityOperation extends AbstractFetchOperation {
     protected void bufferActivityData(byte[] value) {
         int len = value.length;
 
-        if (len % 4 != 1) {
+        if (len % 8 != 1) {
             throw new AssertionError("Unexpected activity array size: " + len);
         }
 
-        for (int i = 1; i < len; i+=4) {
+        for (int i = 1; i < len; i+=8) {
             MiBandActivitySample sample = createSample(value[i], value[i + 1], value[i + 2], value[i + 3]); // lgtm [java/index-out-of-bounds]
             samples.add(sample);
         }
